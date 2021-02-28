@@ -1,0 +1,22 @@
+{
+  "name": "simple-sorting-alorgithms",
+  "version": "1.0.0",
+  "description": "a visualization of some sorting algorithms",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matthajec/simple-sorting-algoriths.git"
+  },
+  "keywords": [
+    "sorting"
+  ],
+  "author": "matthew hajec",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/matthajec/simple-sorting-algoriths/issues"
+  },
+  "homepage": "https://github.com/matthajec/simple-sorting-algoriths#readme"
+}
