@@ -10,9 +10,27 @@
   <link href="styles.css" rel="stylesheet">
 </head>
 <body>
+  <div class="modal fade" id="unsupportedModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Unsupported</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          This sorting algorithm has not been implemented yet
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="bg-dark bg-gradient p-3 mb-4">
       <h1 class="text-center h2 text-light">Simple Sorting Alorgithms</h1>
   </div>
+
   <main class="container">
     <div class="row">
       <section class="col-9">
@@ -20,7 +38,7 @@
           <p class="h3">Output:</p>
           <hr />
             <div class="container gap-1 border-bottom border-dark border-5">
-              <div class="row gx-1 align-items-end c_visual">
+              <div class="row gx-1 align-items-end c_visual overflow-hidden">
 
               </div>
             </div>
@@ -31,16 +49,45 @@
         <div class="p-4 rounded border border-dark">
           <p class="h3">Options</p>
           <hr />
-          <label for="algorithmSelect" class="mb-2">Algorithm:</label>
-          <select id="algorithmSelect" class="form-select " aria-label="sorting algorithm">
-            <option selected>Bubble Sort</option>
-            <option>Quick Sort</option>
-            <option>Selection Sort</option>
-          </select>
+          <div class="mb-3">
+            <label for="algorithmSelect" class="mb-2">Algorithm:</label>
+            <select id="algorithmSelect" class="form-select " aria-label="sorting algorithm">
+              <option selected value="bubble">Bubble Sort</option>
+              <option value="quick">Quick Sort</option>
+              <option value="selection">Selection Sort</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label for="sizeSelect" class="mb-2">Size:</label>
+            <select id="sizeSelect" class="form-select" onchange="visual.generate()" aria-label="sorting algorithm">
+              <option selected>10</option>
+              <option>20</option>
+              <option>50</option>
+              <option>100</option>
+              <option>250</option>
+              <option>1000</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label for="timeSelect" class="mb-2">Step Time (ms):</label>
+            <select id="timeSelect" class="form-select" onchange="sort.stepTime = $('#timeSelect').val()" aria-label="sorting algorithm">
+              <option>0</option>
+              <option>25</option>
+              <option>50</option>
+              <option>100</option>
+              <option selected>250</option>
+              <option>500</option>
+              <option>1000</option>
+              <option>2000</option>
+              <option>5000</option>
+
+            </select>
+          </div>
           <hr />
-          <button type="button" class="btn btn-warning w-100" onclick="visual.shuffle()">Shuffle</button>
-          <hr />
-          <button type="button" class="btn btn-primary w-100" onclick="bubbleSort()">Sort!</button>
+          <button type="button" id="shuffleBtn" class="btn btn-warning w-100 mb-3" onclick="visual.shuffle()">Shuffle</button>
+          <button type="button" id="sortBtn" class="btn btn-primary w-100" onclick="visual.run()">Sort!</button>
         </div>
       </section>
     </div>
