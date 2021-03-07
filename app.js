@@ -101,6 +101,7 @@ const visual = {
   run: function () {
     const alg = $('#algorithmSelect').val();
     if (alg === 'bubble') return sort.bubbleSort();
+    if (alg === 'insertion') return sort.insertionSort();
     unsupportedModal.toggle();
   }
 };
@@ -115,6 +116,7 @@ const sort = {
   stepTime: $('#timeSelect').val(),
   isSorting: false,
   bubbleSort: function () {
+
     const stepTime = this.stepTime;
 
     // perform one "sort"
@@ -175,11 +177,30 @@ const sort = {
     run();
     setSortingStatus(true);
   },
+  insertionSort: async function () {
+    this.setSortingStatus(true);
+
+    for (let i = 0; i < visual.order.length - 1; i++) { // loop through each index
+      for (let j = i; j >= 0; j--) { // get the current element value and start looping backwards through the array
+        await this.sleep(); // wait for the set time
+        visual.setHighlights([j, j + 1]); // set the highlights for the visual
+        if (visual.order[j] > visual.order[j + 1]) { // if the value of j is greater than j + 1...
+          visual.swap(j, j + 1); // swap the indexs
+        } else { //if not...
+          j = 0; // end the loop by setting j to 0
+        }
+      }
+    }
+
+    this.setSortingStatus(false);
+  },
+  sleep: function () {
+    return new Promise(resolve => setTimeout(resolve, this.stepTime)); // return a promise that resolves after the step time
+  },
   setSortingStatus: function (isSorting, canShuffle) {
-    this.isSorting = isSorting;
+    sort.isSorting = isSorting;
     // disable shuffle and sort buttons if a sort is in progress
     $('#sortBtn').attr('disabled', isSorting).text(!isSorting ? 'Sort!' : 'Sorting...');
     $('#shuffleBtn').attr('disabled', isSorting).text(!isSorting ? 'Shuffle' : 'Sorting...');
   }
 };
-
