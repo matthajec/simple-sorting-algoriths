@@ -115,77 +115,30 @@ visual.generate();
 const sort = {
   stepTime: $('#timeSelect').val(),
   isSorting: false,
-  bubbleSort: function () {
+  bubbleSort: async function () {
+    this.setSortingStatus(true);
 
-    const stepTime = this.stepTime;
-
-    // perform one "sort"
-    function pass(limit, cb) {
-      let iteration = 1;
-
-      function performOneCheck() {
-        // determine how many times the interval has ran in this iteration
-        currentIndex = iteration;
-        // get the previous index, to compare to
-        prevIndex = iteration - 1;
-
-        // get the value of those indexs
-        currentValue = visual.order[currentIndex];
-        prevValue = visual.order[prevIndex];
-
-
-        // highlight the bars that being compared
-        visual.setHighlights([prevIndex, currentIndex]);
-
-        // if the current value (n in the list) is less than (n - 1), swap them, moving the bigger element forward
-        if (currentValue < prevValue) {
-          visual.swap(currentIndex, prevIndex);
-        }
-
-        // if it has performed all the comparisions it needs to move onto the next 
-        if (iteration === limit) {
-          clearInterval(passInterval);
-          cb();
-        } else {
-          iteration++;
+    for (let i = 0; i < visual.order.length - 1; i++) { // loop through each index
+      for (let j = 0; j < visual.order.length - 1 - i; j++) { // for each index, loop until right before the already sorted part of the list
+        await this.sleep(); // wait for the step time
+        visual.setHighlights([j, j + 1]); // set the highlights for the visual
+        if (visual.order[j] > visual.order[j + 1]) { // if the value of index j is greater than the value of index j + 1...
+          visual.swap(j, j + 1); // swap the indexes j and j +1
         }
       }
-
-
-      // create an interval to sort so that it makes a good visual
-      let passInterval = setInterval(() => {
-        performOneCheck();
-      }, stepTime);
-
     }
 
-    setSortingStatus = this.setSortingStatus;
-
-    let limit = visual.order.length - 1;
-
-    function run() {
-      pass(limit, () => {
-        if (limit > 1) {
-          limit--;
-          run();
-        } else {
-          setSortingStatus(false);
-        }
-      });
-    }
-
-    run();
-    setSortingStatus(true);
+    this.setSortingStatus(false);
   },
   insertionSort: async function () {
     this.setSortingStatus(true);
 
     for (let i = 0; i < visual.order.length - 1; i++) { // loop through each index
       for (let j = i; j >= 0; j--) { // get the current element value and start looping backwards through the array
-        await this.sleep(); // wait for the set time
+        await this.sleep(); // wait for the step time
         visual.setHighlights([j, j + 1]); // set the highlights for the visual
-        if (visual.order[j] > visual.order[j + 1]) { // if the value of j is greater than j + 1...
-          visual.swap(j, j + 1); // swap the indexs
+        if (visual.order[j] > visual.order[j + 1]) { // if the value of index j is greater than the value of index j + 1...
+          visual.swap(j, j + 1); // swap the indexes j and j +1
         } else { //if not...
           j = 0; // end the loop by setting j to 0
         }
