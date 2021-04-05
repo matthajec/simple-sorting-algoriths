@@ -1,8 +1,8 @@
 // visuals is an object containing functions and variables related to the visual content of the visual (sorry if that wording makes it hard to visualize how the visual changes the visuals)
 const visual = {
-  order: [],
-  elements: [],
-  highlights: [],
+  order: [], // list of numbers that are sorted
+  elements: [], // DOM elements
+  highlights: [], // index(es) of highlighted element(s)
   renderChanges: function () { // improve performance by not rerendering each element, just changing those that should be modified
     // "this" will point to a different place inside of the jQuery "each" function, so i need to extract what i need from "this" before that
     order = this.order;
@@ -102,6 +102,7 @@ const visual = {
     const alg = $('#algorithmSelect').val();
     if (alg === 'bubble') return sort.bubbleSort();
     if (alg === 'insertion') return sort.insertionSort();
+    if (alg === 'selection') return sort.selectionSort();
     unsupportedModal.toggle();
   }
 };
@@ -143,6 +144,23 @@ const sort = {
           j = 0; // end the loop by setting j to 0
         }
       }
+    }
+
+    this.setSortingStatus(false);
+  },
+  selectionSort: async function () {
+    this.setSortingStatus(true);
+
+    for (let i = 0; i < visual.order.length - 1; i++) { // loop through each index, i is the starting index of each search
+      let smallestValueIndex = i; // the smallest value at first must be i since that's the only value scanned so far
+      for (let j = i + 1; j < visual.order.length; j++) {
+        await this.sleep(); // wait for step time
+        visual.setHighlights([i, smallestValueIndex, j]);
+        if (visual.order[smallestValueIndex] > visual.order[j]) {
+          smallestValueIndex = j;
+        }
+      }
+      visual.swap(smallestValueIndex, i);
     }
 
     this.setSortingStatus(false);
